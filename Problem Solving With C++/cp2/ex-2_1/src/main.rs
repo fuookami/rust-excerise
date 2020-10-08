@@ -1,5 +1,4 @@
 use std::io;
-use std::f64;
 
 const GRAM_PER_VASE : f64 = 350.;
 const GRAM_PER_POUND : f64 = 454.;
