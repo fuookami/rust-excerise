@@ -8,7 +8,7 @@ fn read_amount() -> i64 {
         Ok(num) => num,
         Err(_) => panic!("Failed to parse to number!")
     };
-    return amount
+    amount
 }
 
 fn main() {
