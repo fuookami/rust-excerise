@@ -21,7 +21,7 @@ fn read_time() -> f64 {
 }
 
 fn main() {
-    println!("Please input free falling time: ");
+    println!("Please input free falling time(second): ");
     let time = read_time();
 
     println!("Length of free falling in {}s is {}m", time, length_of_free_falling(time));

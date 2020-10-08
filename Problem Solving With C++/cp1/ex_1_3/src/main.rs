@@ -1,10 +1,10 @@
 use std::io;
 
-fn read_amount() -> i64 {
+fn read_amount() -> u64 {
     let mut line = String::new();
     io::stdin().read_line(&mut line)
         .expect("Failed to read line!");
-    let amount : i64 = match line.trim().parse() {
+    let amount : u64 = match line.trim().parse() {
         Ok(num) => num,
         Err(_) => panic!("Failed to parse to number!")
     };
