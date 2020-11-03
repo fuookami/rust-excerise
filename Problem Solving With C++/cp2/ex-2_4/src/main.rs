@@ -1,6 +1,6 @@
 use std::io;
 
-const MONTH_PER_YEAR : i64 = 12;
+const MONTH_PER_YEAR: i64 = 12;
 
 fn calculate_loan(target: f64, interest_rate: f64, repayment_month: i64) -> f64 {
     // x - x * rate * month / 12 = target
@@ -10,49 +10,53 @@ fn calculate_loan(target: f64, interest_rate: f64, repayment_month: i64) -> f64 
 
 fn read_target_loan() -> f64 {
     let mut line = String::new();
-    io::stdin().read_line(&mut line)
+    io::stdin()
+        .read_line(&mut line)
         .expect("Failed to read line!");
-    let loan : f64 = match line.trim().parse() {
+    let loan: f64 = match line.trim().parse() {
         Ok(num) => num,
-        Err(_) => panic!("Failed to parse to number!")
+        Err(_) => panic!("Failed to parse to number!"),
     };
     match loan {
         loan if loan >= 0. => loan,
-        _ => panic!("Not negative target loan!")
+        _ => panic!("Not negative target loan!"),
     }
 }
 
 fn read_interest_rate() -> f64 {
     let mut line = String::new();
-    io::stdin().read_line(&mut line)
+    io::stdin()
+        .read_line(&mut line)
         .expect("Failed to read line!");
-    let interest_rate : f64 = match line.trim().parse() {
+    let interest_rate: f64 = match line.trim().parse() {
         Ok(num) => num,
-        Err(_) => panic!("Failed to parse to number!")
+        Err(_) => panic!("Failed to parse to number!"),
     };
     match interest_rate {
         interest_rate if interest_rate >= 0. => interest_rate,
-        _ => panic!("Not negative interest rate!")
+        _ => panic!("Not negative interest rate!"),
     }
 }
 
 fn read_repayment_month() -> i64 {
     let mut line = String::new();
-    io::stdin().read_line(&mut line)
+    io::stdin()
+        .read_line(&mut line)
         .expect("Failed to read line!");
-    let month : i64 = match line.trim().parse() {
+    let month: i64 = match line.trim().parse() {
         Ok(num) => num,
-        Err(_) => panic!("Failed to parse to number!")
+        Err(_) => panic!("Failed to parse to number!"),
     };
     match month {
         month if month >= 0 => month,
-        _ => panic!("Not negative repayment month!")
+        _ => panic!("Not negative repayment month!"),
     }
 }
 
 fn read_confirm() -> bool {
     let mut line = String::new();
-    io::stdin().read_line(&mut line)
+    io::stdin()
+        .read_line(&mut line)
         .expect("Failed to read line!");
     line.trim() == "y"
 }
@@ -77,7 +81,7 @@ fn main() {
         println!("Continue(y)?: ");
         match read_confirm() {
             false => break,
-            _ => continue
+            _ => continue,
         }
     }
 }

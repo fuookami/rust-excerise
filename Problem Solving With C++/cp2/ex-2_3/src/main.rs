@@ -1,39 +1,42 @@
 use std::io;
 
-const PROMOTION_PERCENT : f64 = 0.076;
-const MONTH_PER_YEAR : i64 = 12;
+const PROMOTION_PERCENT: f64 = 0.076;
+const MONTH_PER_YEAR: i64 = 12;
 
 fn read_annual_pay() -> f64 {
     let mut line = String::new();
-    io::stdin().read_line(&mut line)
+    io::stdin()
+        .read_line(&mut line)
         .expect("Failed to read line!");
-    let annual_pay : f64 = match line.trim().parse() {
+    let annual_pay: f64 = match line.trim().parse() {
         Ok(num) => num,
-        Err(_) => panic!("Failed to parse to number!")
+        Err(_) => panic!("Failed to parse to number!"),
     };
     match annual_pay {
         annual_pay if annual_pay >= 0. => annual_pay,
-        _ => panic!("Not negative annual pay!")
+        _ => panic!("Not negative annual pay!"),
     }
 }
 
 fn read_month() -> i64 {
     let mut line = String::new();
-    io::stdin().read_line(&mut line)
+    io::stdin()
+        .read_line(&mut line)
         .expect("Failed to read line!");
-    let month : i64 = match line.trim().parse() {
+    let month: i64 = match line.trim().parse() {
         Ok(num) => num,
-        Err(_) => panic!("Failed to parse to number!")
+        Err(_) => panic!("Failed to parse to number!"),
     };
     match month {
         month if month >= 0 => month,
-        _ => panic!("Not negative month!")
+        _ => panic!("Not negative month!"),
     }
 }
 
 fn read_confirm() -> bool {
     let mut line = String::new();
-    io::stdin().read_line(&mut line)
+    io::stdin()
+        .read_line(&mut line)
         .expect("Failed to read line!");
     line.trim() == "y"
 }
@@ -58,7 +61,7 @@ fn main() {
         println!("Continue(y)?: ");
         match read_confirm() {
             false => break,
-            _ => continue
+            _ => continue,
         }
     }
 }

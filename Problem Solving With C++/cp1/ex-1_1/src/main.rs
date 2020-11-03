@@ -2,11 +2,12 @@ use std::io;
 
 fn read_number() -> f64 {
     let mut line = String::new();
-    io::stdin().read_line(&mut line)
+    io::stdin()
+        .read_line(&mut line)
         .expect("Filed to read line!");
-    let n : f64 = match line.trim().parse() {
+    let n: f64 = match line.trim().parse() {
         Ok(num) => num,
-        Err(_) => panic!("Failed to parse to number!")
+        Err(_) => panic!("Failed to parse to number!"),
     };
     n
 }

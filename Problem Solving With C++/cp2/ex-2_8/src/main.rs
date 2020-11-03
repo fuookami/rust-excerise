@@ -1,10 +1,10 @@
-const MONTHLY_INTEREST_RATE : f64 = 0.015;
-const PAYMENT_PER_MONTH : f64 = 50.;
+const MONTHLY_INTEREST_RATE: f64 = 0.015;
+const PAYMENT_PER_MONTH: f64 = 50.;
 
 fn main() {
-    let mut loan : f64 = 1000.;
-    let mut month : i64 = 0;
-    let mut total_payment : f64 = 0.;
+    let mut loan: f64 = 1000.;
+    let mut month: i64 = 0;
+    let mut total_payment: f64 = 0.;
 
     while loan > 0. {
         let this_interest = loan * MONTHLY_INTEREST_RATE;
