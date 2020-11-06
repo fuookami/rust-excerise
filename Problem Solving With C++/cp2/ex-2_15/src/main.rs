@@ -65,7 +65,9 @@ fn main() {
     println!("Enter temperature variation: ");
     let temperature_variation = read_temperature_variation();
 
-    print_linear_displacement(
-        calculate_linear_displacement(alpha, length, temperature_variation)
-    );
+    print_linear_displacement(calculate_linear_displacement(
+        alpha,
+        length,
+        temperature_variation,
+    ));
 }
