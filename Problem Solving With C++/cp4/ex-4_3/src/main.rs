@@ -64,9 +64,18 @@ fn main() {
         println!("Enter age: ");
         let age = read_u64();
 
-        println!("Hat size after 10 years: {}", calculate_hat_size(weight, height));
-        println!("Cloth size after 10 years: {}", calculate_cloth_size(weight, height, age + 10));
-        println!("Waistline after 10 years: {}", calculate_waistline(weight, age + 10));
+        println!(
+            "Hat size after 10 years: {}",
+            calculate_hat_size(weight, height)
+        );
+        println!(
+            "Cloth size after 10 years: {}",
+            calculate_cloth_size(weight, height, age + 10)
+        );
+        println!(
+            "Waistline after 10 years: {}",
+            calculate_waistline(weight, age + 10)
+        );
 
         println!("Continue(y)?: ");
         match read_confirm() {
