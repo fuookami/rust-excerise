@@ -15,8 +15,10 @@ fn pay_impl(rest: f64, payment: f64) -> PaymentResult {
 
 fn pay(rest: f64, payment: f64) -> Result<PaymentResult, ()> {
     match payment {
-        payment if payment == 1.0 || payment == 0.25 || payment == 0.1 || payment == 0.05 => Result::Ok(pay_impl(rest, payment)),
-        _ => Result::Err(())
+        payment if payment == 1.0 || payment == 0.25 || payment == 0.1 || payment == 0.05 => {
+            Result::Ok(pay_impl(rest, payment))
+        }
+        _ => Result::Err(()),
     }
 }
 
@@ -45,14 +47,14 @@ fn main() {
                 PaymentResult::Rest(now_rest) => {
                     println!("Total payment: {}", 3.5 - now_rest);
                     rest = now_rest;
-                },
+                }
                 PaymentResult::Change(change) => {
                     println!("Enjoy your crispy fried yogurt!");
                     println!("Change you {}.", change);
                     break;
                 }
             },
-            Result::Err(_) => println!("Invalid payment!")
+            Result::Err(_) => println!("Invalid payment!"),
         };
     }
 }
