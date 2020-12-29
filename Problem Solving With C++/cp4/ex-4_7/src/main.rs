@@ -23,7 +23,6 @@ fn parse_time(time: &str) -> Result<Time, &'static str> {
     let mut flag = 0;
 
     for s in time.split(|c| c == ':' || c == ' ') {
-        println!("{}", s);
         match flag {
             0 => match s.parse::<u32>() {
                 Ok(num) if num < 12 => hour = num,
@@ -69,12 +68,7 @@ fn main() {
 
     match today_time {
         Result::Ok(today_time) => match tomorow_time {
-            Result::Ok(tomorow_time) => {
-                println!(
-                    "Jump {} minutes!",
-                    tomorow_time.next_day_normalize() - today_time.normalize()
-                )
-            }
+            Result::Ok(tomorow_time) => { println!("Jump {} minutes!", tomorow_time.next_day_normalize() - today_time.normalize()) }
             Result::Err(msg) => println!("{}", msg),
         },
         Result::Err(msg) => println!("{}", msg),
