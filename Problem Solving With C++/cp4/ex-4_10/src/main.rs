@@ -86,6 +86,6 @@ fn main() {
     match items.judge() {
         Status::NoExp => println!("No exp!"),
         Status::MoreEdoc => println!("To get one or tow more edoc!"),
-        Status::GetExp => println!("To get exp!")
+        Status::GetExp => println!("To get exp!"),
     }
 }

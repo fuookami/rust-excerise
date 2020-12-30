@@ -8,7 +8,7 @@ struct Time {
 
 impl Time {
     fn normalize(&self) -> u32 {
-        self.hour * 60 + self.minute + if self.is_am { 12 * 60 } else { 0 }
+        self.hour * 60 + self.minute + if !self.is_am { 12 * 60 } else { 0 }
     }
 
     fn next_day_normalize(&self) -> u32 {
@@ -24,15 +24,15 @@ fn parse_time(time: &str) -> Result<Time, &'static str> {
 
     for s in time.split(|c| c == ':' || c == ' ') {
         match flag {
-            0 => match s.parse::<u32>() {
+            0 => match s.trim().parse::<u32>() {
                 Ok(num) if num < 12 => hour = num,
                 _ => return Result::Err("Invalid hour!"),
             },
-            1 => match s.parse::<u32>() {
+            1 => match s.trim().parse::<u32>() {
                 Ok(num) if num < 60 => minute = num,
                 _ => return Result::Err("Invalid minute!"),
             },
-            2 => is_am = s.find(|c: char| c.to_ascii_uppercase() == 'A'),
+            2 => is_am = s.trim().find(|c: char| c.to_ascii_uppercase() == 'A'),
             _ => return Result::Err("Invalid time format!"),
         }
         flag = flag + 1;
@@ -68,7 +68,12 @@ fn main() {
 
     match today_time {
         Result::Ok(today_time) => match tomorow_time {
-            Result::Ok(tomorow_time) => { println!("Jump {} minutes!", tomorow_time.next_day_normalize() - today_time.normalize()) }
+            Result::Ok(tomorow_time) => {
+                println!(
+                    "Jump {} minutes!",
+                    tomorow_time.next_day_normalize() - today_time.normalize()
+                )
+            }
             Result::Err(msg) => println!("{}", msg),
         },
         Result::Err(msg) => println!("{}", msg),
