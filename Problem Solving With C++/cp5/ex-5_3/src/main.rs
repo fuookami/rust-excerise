@@ -8,7 +8,7 @@ struct Time {
 
 struct TimeDuration {
     hour: u32,
-    minute: u32
+    minute: u32,
 }
 
 impl Time {
