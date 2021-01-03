@@ -61,7 +61,10 @@ fn parse_date(time: &str) -> Result<Date, &'static str> {
     let mut day = 0;
     let mut flag = 0;
 
-    for s in time.split(|c| c == ',' || c == ' ').filter(|s| !s.is_empty()) {
+    for s in time
+        .split(|c| c == ',' || c == ' ')
+        .filter(|s| !s.is_empty())
+    {
         match flag {
             0 => match s.trim() {
                 "January" => month = 0,
@@ -97,7 +100,7 @@ fn parse_date(time: &str) -> Result<Date, &'static str> {
     Result::Ok(Date {
         year: year,
         month: month,
-        day: day
+        day: day,
     })
 }
 
@@ -115,17 +118,20 @@ fn main() {
 
     match date {
         Result::Ok(date) => {
-            println!("Weekday: {}", match date.weekday() {
-                0 => "Sunday",
-                1 => "Monday",
-                2 => "Tuesday",
-                3 => "Wednesday",
-                4 => "Thursday",
-                5 => "Friday",
-                6 => "Saturday",
-                _ => panic!("Invalid weekday!")
-            })
-        },
-        Result::Err(msg) => println!("{}", msg)
+            println!(
+                "Weekday: {}",
+                match date.weekday() {
+                    0 => "Sunday",
+                    1 => "Monday",
+                    2 => "Tuesday",
+                    3 => "Wednesday",
+                    4 => "Thursday",
+                    5 => "Friday",
+                    6 => "Saturday",
+                    _ => panic!("Invalid weekday!"),
+                }
+            )
+        }
+        Result::Err(msg) => println!("{}", msg),
     }
 }
