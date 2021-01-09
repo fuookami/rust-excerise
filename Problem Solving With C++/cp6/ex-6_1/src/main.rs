@@ -1,4 +1,3 @@
-use std::error::Error;
 use std::fs::File;
 use std::io;
 use std::io::prelude::*;
@@ -17,13 +16,13 @@ fn read_file(path: &str) -> String {
     let display = path.display();
 
     let mut fin = match File::open(&path) {
-        Err(why) => panic!("couldn't open {}: {}", display, why.description()),
+        Err(why) => panic!("couldn't open {}: {}", display, why),
         Ok(fin) => fin,
     };
 
     let mut s = String::new();
     match fin.read_to_string(&mut s) {
-        Err(why) => panic!("couldn't read {}: {}", display, why.description()),
+        Err(why) => panic!("couldn't read {}: {}", display, why),
         Ok(_) => {}
     };
 
@@ -35,12 +34,12 @@ fn write_file(path: &str, context: &str) {
     let display = path.display();
 
     let mut fout = match File::create(&path) {
-        Err(why) => panic!("couldn't create {}: {}", display, why.description()),
+        Err(why) => panic!("couldn't create {}: {}", display, why),
         Ok(fout) => fout,
     };
 
     match fout.write(context.as_bytes()) {
-        Err(why) => panic!("couldn't write {}: {}", display, why.description()),
+        Err(why) => panic!("couldn't write {}: {}", display, why),
         Ok(_) => {}
     };
 }
