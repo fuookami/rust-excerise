@@ -1,0 +1,15 @@
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+const float meter_per_foot(0.305);
+
+int main(void)
+{
+	cout << "Enter a value for feet: ";
+	float feet;
+	cin >> feet;
+	cout << feet << " feet is " << feet * meter_per_foot << " meters" << endl;
+	system("pause");
+	return 0;
+}
