@@ -1,0 +1,3 @@
+Total character amount: 2993
+Total not empty character amount: 2502
+Total alphabetic amount: 2400
