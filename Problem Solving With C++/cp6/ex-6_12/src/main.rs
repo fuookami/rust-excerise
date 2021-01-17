@@ -23,7 +23,9 @@ fn read_file(path: &str) -> String {
 
 fn check_words_amount(context: &str) -> usize {
     context
-        .split(|c: char| c.is_whitespace() || c == ',' || c == '.' || c == ';' || c == ':' || c == '?')
+        .split(|c: char| {
+            c.is_whitespace() || c == ',' || c == '.' || c == ';' || c == ':' || c == '?'
+        })
         .filter(|s| !s.is_empty())
         .count()
 }
@@ -39,5 +41,8 @@ fn read_file_name() -> String {
 fn main() {
     println!("Enter file name: ");
     let file_name = read_file_name();
-    println!("Words amount: {}", check_words_amount(&read_file(file_name.trim())));
+    println!(
+        "Words amount: {}",
+        check_words_amount(&read_file(file_name.trim()))
+    );
 }
