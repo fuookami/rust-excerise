@@ -1,19 +1,19 @@
 #![feature(assoc_char_funcs)]
 
+use std::fmt::*;
 use std::io;
 use std::ops::Add;
-use std::fmt::*;
 
-const BIG_INTEGER_LEN : usize = 3;
+const BIG_INTEGER_LEN: usize = 3;
 
 struct BigInteger {
-    _buffer: [char; BIG_INTEGER_LEN]
+    _buffer: [char; BIG_INTEGER_LEN],
 }
 
 impl BigInteger {
     fn new() -> BigInteger {
         BigInteger {
-            _buffer: ['0'; BIG_INTEGER_LEN]
+            _buffer: ['0'; BIG_INTEGER_LEN],
         }
     }
 
@@ -24,7 +24,7 @@ impl BigInteger {
             match chars.next() {
                 Option::Some(ch) if ch.is_ascii_digit() => ret._buffer[i] = ch,
                 Option::Some(_) => panic!("Invalid big integer"),
-                Option::None => break
+                Option::None => break,
             }
         }
         ret
@@ -38,7 +38,8 @@ impl Add for &BigInteger {
         let mut flag = false;
         let mut ret = BigInteger::new();
         for i in (0..BIG_INTEGER_LEN).rev() {
-            let mut temp = self._buffer[i].to_digit(10).unwrap() + rhs._buffer[i].to_digit(10).unwrap();
+            let mut temp =
+                self._buffer[i].to_digit(10).unwrap() + rhs._buffer[i].to_digit(10).unwrap();
             if flag {
                 temp += 1;
                 flag = false;
@@ -61,12 +62,11 @@ impl Display for BigInteger {
         }
         if i == BIG_INTEGER_LEN {
             write!(f, "0")
-        }
-        else {
+        } else {
             for j in i..BIG_INTEGER_LEN {
                 match write!(f, "{}", self._buffer[j]) {
-                    Result::Ok(_) => {},
-                    Result::Err(err) => return Result::Err(err)
+                    Result::Ok(_) => {}
+                    Result::Err(err) => return Result::Err(err),
                 }
             }
             Result::Ok(())

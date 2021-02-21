@@ -1,8 +1,8 @@
+use std::collections::BTreeMap;
 use std::fs::File;
 use std::io::prelude::*;
-use std::path::Path;
-use std::collections::BTreeMap;
 use std::iter::FromIterator;
+use std::path::Path;
 
 fn read_file(path: &str) -> String {
     let path = Path::new(path);
@@ -27,11 +27,12 @@ fn count(s: &str) -> Vec<(char, usize)> {
     for ch in s.chars() {
         if ch == '.' {
             break;
-        }
-        else if ch.is_ascii_alphabetic() {
+        } else if ch.is_ascii_alphabetic() {
             match counter.get_mut(&ch) {
                 Option::Some(time) => *time += 1,
-                Option::None => { counter.insert(ch, 1); }
+                Option::None => {
+                    counter.insert(ch, 1);
+                }
             }
         }
     }

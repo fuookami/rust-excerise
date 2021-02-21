@@ -15,7 +15,11 @@ fn read_line() -> String {
 
 fn parse_values(context: &str) -> Vec<f64> {
     let mut ret = Vec::<f64>::new();
-    for s in context.trim().split_ascii_whitespace().filter(|s| !s.is_empty()) {
+    for s in context
+        .trim()
+        .split_ascii_whitespace()
+        .filter(|s| !s.is_empty())
+    {
         match s.parse::<f64>() {
             Result::Ok(value) => ret.push(value),
             Result::Err(_) => {}
