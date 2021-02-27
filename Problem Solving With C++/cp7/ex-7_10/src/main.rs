@@ -107,7 +107,16 @@ fn check_one(dish: &Dish, positions: &[usize]) -> Result {
 }
 
 fn check(dish: &Dish) -> Result {
-    static POSITIONS: [[usize; 3]; 8] = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    static POSITIONS: [[usize; 3]; 8] = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
     for pos in &POSITIONS {
         match check_one(dish, pos) {
             Result::Player1Win => return Result::Player1Win,
