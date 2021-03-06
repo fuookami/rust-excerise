@@ -1,7 +1,45 @@
+#![feature(str_split_as_str)]
+
 #[macro_use]
 extern crate strum_macros;
 
 use rand::Rng;
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
+
+fn write_file(path: &str, context: &str) {
+    let path = Path::new(path);
+    let display = path.display();
+
+    let mut fout = match File::create(&path) {
+        Err(why) => panic!("couldn't create {}: {}", display, why),
+        Ok(fout) => fout,
+    };
+
+    match fout.write(context.as_bytes()) {
+        Err(why) => panic!("couldn't write {}: {}", display, why),
+        Ok(_) => {}
+    };
+}
+
+fn read_file(path: &str) -> String {
+    let path = Path::new(path);
+    let display = path.display();
+
+    let mut fin = match File::open(&path) {
+        Err(why) => panic!("couldn't open {}: {}", display, why),
+        Ok(fin) => fin,
+    };
+
+    let mut s = String::new();
+    match fin.read_to_string(&mut s) {
+        Err(why) => panic!("couldn't read {}: {}", display, why),
+        Ok(_) => {}
+    };
+
+    return s;
+}
 
 #[derive(Clone, Copy, AsRefStr, PartialEq, Eq)]
 #[repr(u8)]
@@ -45,6 +83,55 @@ impl Schedule {
         let mut coachs = Vec::new();
         for name in names {
             coachs.push(Coach::new(&name));
+        }
+        Self { coachs: coachs }
+    }
+
+    fn write_to_file(&self, path: &str) {
+        let mut context = String::new();
+        for coach in &self.coachs {
+            context.push_str(&format!("{},", coach.name));
+            for time in &coach.scheduled_time {
+                context.push_str(&format!("{} {},", time.0 as u8, time.1));
+            }
+            context.push('\n');
+        }
+        write_file(path, &context);
+    }
+
+    fn read_from_file(path: &str) -> Self {
+        let context = read_file(path);
+        let mut coachs = Vec::new();
+        for line in context.trim().split("\n").filter(|s| !s.is_empty()) {
+            let mut it = line.split(",").filter(|s| !s.is_empty());
+            let mut coach = Coach::new(it.next().unwrap());
+            for part in it {
+                let mut day = 0;
+                let mut time = 0;
+                let mut flag = 0;
+                for day_time in part.split(" ") {
+                    match flag {
+                        0 => {
+                            day = match day_time.parse::<u8>() {
+                                Result::Ok(value) => value,
+                                Result::Err(_) => panic!("Invalid day time!"),
+                            }
+                        }
+                        1 => {
+                            time = match day_time.parse::<u8>() {
+                                Result::Ok(value) => value,
+                                Result::Err(_) => panic!("Invalid day time!"),
+                            }
+                        }
+                        _ => panic!("Invalid day time!"),
+                    }
+                    flag += 1
+                }
+                coach
+                    .scheduled_time
+                    .push((unsafe { std::mem::transmute::<u8, Weekday>(day) }, time));
+            }
+            coachs.push(coach);
         }
         Self { coachs: coachs }
     }
@@ -107,6 +194,9 @@ fn main() {
         let time = rng.gen_range(11..15);
         schedule.schedule(&coach, day, time);
     }
+    schedule.write_to_file("schedule.txt");
+
+    let schedule = Schedule::read_from_file("schedule.txt");
 
     print!("Individual lesson time: ");
     for time in schedule.individual_lesson_time() {
