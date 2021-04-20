@@ -1,7 +1,7 @@
 use std::io;
 
 enum Pattern<'a> {
-    Word(&'a str),
+    Number(&'a str),
     Else(&'a str),
 }
 
@@ -14,8 +14,8 @@ fn read_line() -> String {
 }
 
 fn judge<'a>(part: &'a str) -> Pattern<'a> {
-    match part.chars().all(|ch: char| ch.is_alphabetic()) {
-        true => Pattern::Word(part),
+    match part.chars().all(|ch: char| ch.is_numeric()) {
+        true => Pattern::Number(part),
         false => Pattern::Else(part),
     }
 }
@@ -23,13 +23,13 @@ fn judge<'a>(part: &'a str) -> Pattern<'a> {
 fn split<'a>(context: &'a str) -> Vec<&'a str> {
     let mut ret = Vec::new();
     let bytes = context.as_bytes();
-    let mut is_alpha = (bytes[0] as char).is_alphabetic();
+    let mut is_alpha = (bytes[0] as char).is_alphanumeric();
     let mut j = 0;
     for i in 0..bytes.len() {
-        if (bytes[i] as char).is_alphabetic() != is_alpha {
+        if (bytes[i] as char).is_alphanumeric() != is_alpha {
             ret.push(context.get(j..i).unwrap());
             j = i;
-            is_alpha = (bytes[i] as char).is_alphabetic();
+            is_alpha = (bytes[i] as char).is_alphanumeric();
         }
     }
     ret.push(context.get(j..).unwrap());
@@ -40,13 +40,11 @@ fn transform<'a>(parts: &Vec<&'a str>) -> String {
     let mut ret = String::new();
     for i in 0..parts.len() {
         match judge(parts[i]) {
-            Pattern::Word(word) => match word.len() {
-                4 => match i {
-                    0 => ret += "Love",
-                    _ => ret += "love",
-                },
-                _ => ret += word,
-            },
+            Pattern::Number(word) => {
+                for _ in 0..word.len() {
+                    ret += "x";
+                }
+            }
             Pattern::Else(word) => ret += word,
         }
     }
