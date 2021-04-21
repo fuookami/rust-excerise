@@ -1,4 +1,3 @@
-use std::collections::BTreeMap;
 use std::fs::File;
 use std::io;
 use std::io::prelude::*;
@@ -9,16 +8,75 @@ enum ReadMode {
     FromConsole,
 }
 
-fn count(nums: Vec<i64>) -> BTreeMap<i64, usize> {
-    let mut counter = BTreeMap::<i64, usize>::new();
-    for num in nums {
-        match counter.get_mut(&num) {
-            Option::Some(time) => *time += 1,
-            Option::None => {
-                counter.insert(num, 1);
+fn select_sort(nums: &mut Vec<i64>, low: usize, high: usize) {
+    for i in low..=high {
+        let mut min_index = i;
+        let mut min = nums[i];
+        for j in (i + 1)..=high {
+            if nums[j] < min {
+                min_index = j;
+                min = nums[j];
             }
         }
+        nums.swap(i, min_index);
     }
+}
+
+fn quick_sort_impl(nums: &mut Vec<i64>, low: usize, high: usize) {
+    if low > high {
+        return;
+    }
+    if high - low > 4 {
+        let mut i = low;
+        let mut j = high;
+        let num = nums[i];
+        while i < j {
+            while i < j && nums[j] >= num {
+                j -= 1;
+            }
+            if i < j {
+                nums[i] = nums[j];
+                i += 1;
+            }
+
+            while i < j && nums[i] < num {
+                i += 1;
+            }
+            if i < j {
+                nums[j] = nums[i];
+                j -= 1;
+            }
+        }
+        nums[i] = num;
+        if i != 0 {
+            quick_sort_impl(nums, low, i - 1);
+        }
+        quick_sort_impl(nums, i + 1, high);
+    } else {
+        select_sort(nums, low, high);
+    }
+}
+
+fn quick_sort(nums: &mut Vec<i64>) {
+    let high = nums.len() - 1;
+    quick_sort_impl(nums, 0, high);
+}
+
+fn count(mut nums: Vec<i64>) -> Vec<(i64, usize)> {
+    let mut counter = Vec::new();
+    quick_sort(&mut nums);
+    let mut curr_num = nums[0];
+    let mut curr_counter = 0;
+    for num in nums {
+        if num == curr_num {
+            curr_counter += 1;
+        } else {
+            counter.push((curr_num, curr_counter));
+            curr_num = num;
+            curr_counter = 1;
+        }
+    }
+    counter.push((curr_num, curr_counter));
     counter
 }
 
