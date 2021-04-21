@@ -28,5 +28,5 @@ fn print(arr: &Vec<i64>) {
 }
 
 fn main() {
-    insert_sort(&mut vec!(8, 6, 10, 2, 16, 4, 18, 14, 12, 10), print);
+    insert_sort(&mut vec![8, 6, 10, 2, 16, 4, 18, 14, 12, 10], print);
 }
