@@ -75,7 +75,7 @@ fn main() {
             print!("{}, ", record.quiz_scores[i]);
         }
         for i in 0..EXAM_AMOUNT {
-            print!("{}, ", record.exam_scores[1]);
+            print!("{}, ", record.exam_scores[i]);
         }
         let (average_score, final_score) = final_score(record);
         println!("{}, {}", average_score, final_score.as_ref());
