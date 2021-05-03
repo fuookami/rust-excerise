@@ -38,39 +38,43 @@ impl MonthImpl {
     fn to_num(&self) -> u64 {
         unsafe { std::mem::transmute::<MonthImpl, u64>(*self) }
     }
+
+    fn next(&self) -> MonthImpl {
+        unsafe { std::mem::transmute(std::mem::transmute::<MonthImpl, u64>(*self) + 1) }
+    }
 }
 
 #[derive(PartialEq, Eq, Debug)]
 struct Month {
-    num: u64,
+    s: &'static str
 }
 
 impl Month {
-    fn new(num: u64) -> Month {
-        Month { num: num }
+    fn new(s: &'static str) -> Month {
+        Month { s: s }
     }
 
-    fn from_str(s: &str) -> Month {
-        Self::new(MonthImpl::new_from_str(s).to_num())
+    fn from_num(n: u64) -> Month {
+        Self::new(MonthImpl::new_from_num(n).to_str())
     }
 
     fn to_str(&self) -> &'static str {
-        MonthImpl::new_from_num(self.num).to_str()
+        self.s
     }
 
     fn to_num(&self) -> u64 {
-        self.num
+        MonthImpl::new_from_str(self.s).to_num()
     }
 
     fn next(&self) -> Month {
-        Month { num: self.num + 1 }
+        Month { s: MonthImpl::new_from_str(self.s).next().to_str() }
     }
 }
 
 fn main() {
-    assert_eq!(Month::new(1), Month::from_str("Jan"));
-    assert_eq!(Month::new(1).to_str(), "Jan");
-    assert_eq!(Month::from_str("Jan").to_num(), 1);
-    assert_eq!(Month::from_str("Jan").next().to_num(), 2);
-    assert_eq!(Month::from_str("Jan").next().to_str(), "Feb");
+    assert_eq!(Month::from_num(1), Month::new("Jan"));
+    assert_eq!(Month::from_num(1).to_str(), "Jan");
+    assert_eq!(Month::new("Jan").to_num(), 1);
+    assert_eq!(Month::new("Jan").next().to_num(), 2);
+    assert_eq!(Month::new("Jan").next().to_str(), "Feb");
 }
