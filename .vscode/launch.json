@@ -5,10 +5,10 @@
             "name": "(Windows) Launch",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/Problem Solving With C++/cp8/ex-8_10/target/debug/ex-8_10.exe",
+            "program": "${workspaceRoot}/Problem Solving With C++/cp8/ex-8_16/target/debug/ex-8_16.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceRoot}/Problem Solving With C++/cp8/ex-8_16",
             "environment": [],
             "externalConsole": true
         },
