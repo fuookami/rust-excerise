@@ -40,6 +40,8 @@ fn read_confirm() -> bool {
 fn main() {
     let mut current_index: u64 = 18;
 
+    let f = std::io::stdout();
+
     loop {
         println!("Enter your question: ");
         let _ = read_line();

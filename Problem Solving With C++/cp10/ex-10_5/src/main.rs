@@ -2,6 +2,10 @@ extern crate strum;
 #[macro_use]
 extern crate strum_macros;
 
+use std::fs::File;
+use std::io;
+use std::io::prelude::*;
+use std::path::Path;
 use std::str::FromStr;
 use strum_macros::EnumString;
 
@@ -62,6 +66,10 @@ impl Month {
         self.s
     }
 
+    fn write<W: Write>(&self, w: &mut W) -> io::Result<usize> {
+        w.write(self.to_str().as_bytes())
+    }
+
     fn to_num(&self) -> u64 {
         MonthImpl::new_from_str(self.s).to_num()
     }
@@ -74,9 +82,16 @@ impl Month {
 }
 
 fn main() {
-    assert_eq!(Month::from_num(1), Month::new("Jan"));
-    assert_eq!(Month::from_num(1).to_str(), "Jan");
-    assert_eq!(Month::new("Jan").to_num(), 1);
-    assert_eq!(Month::new("Jan").next().to_num(), 2);
-    assert_eq!(Month::new("Jan").next().to_str(), "Feb");
+    let path = Path::new("output.txt");
+    let display = path.display();
+    let mut fout = match File::create(&path) {
+        Err(why) => panic!("couldn't open {}: {}", display, why),
+        Ok(fout) => fout,
+    };
+
+    let _ = Month::from_num(1).write(&mut std::io::stdout());
+    let _ = Month::from_num(1).write(&mut fout);
+
+    let _ = Month::new("Jan").next().write(&mut std::io::stdout());
+    let _ = Month::new("Jan").next().write(&mut fout);
 }
