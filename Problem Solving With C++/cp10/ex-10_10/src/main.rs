@@ -1,81 +1,88 @@
-#[macro_use]
-extern crate strum_macros;
+use bit_set::BitSet;
+use std::ops::Index;
 
-use rand::Rng;
-
-#[derive(AsRefStr)]
-enum MPAA {
-    G,
-    PG,
-    PG13,
-    R,
+struct ZipCode {
+    postnet: BitSet,
 }
 
-#[derive(Clone, Copy)]
-#[repr(u32)]
-enum Grade {
-    Terrible = 1,
-    Bad = 2,
-    OK = 3,
-    Good = 4,
-    Great = 5,
-}
+impl ZipCode {
+    const WEIGHTS: [u8; 5] = [7, 4, 2, 1, 0];
 
-struct Movie {
-    name: String,
-    mpaa: MPAA,
-    grades: Vec<Grade>,
-}
-
-impl Movie {
-    fn new(name: String, mpaa: MPAA) -> Self {
-        Self {
-            name: name,
-            mpaa: mpaa,
-            grades: Vec::new(),
+    fn new_from_int_zip(mut zip: u32) -> Self {
+        let mut v = BitSet::new();
+        for i in (0..5).rev() {
+            Self::from_int_zip(&mut v, (zip % 10) as u8, i * 5);
+            zip /= 10;
         }
+        v.insert(26);
+        Self { postnet: v }
     }
 
-    fn add_rating(&mut self, grade: Grade) {
-        self.grades.push(grade)
+    fn new_from_string_code(zip: &str) -> Self {
+        let mut v = BitSet::new();
+        let mut i = 0;
+        for ch in zip.chars() {
+            match ch {
+                '1' => {
+                    v.insert(i);
+                }
+                '0' => (),
+                _ => panic!("Invalid string code!"),
+            };
+            i += 1;
+        }
+        Self { postnet: v }
     }
 
-    fn get_average(&self) -> f64 {
-        match self.grades.len() {
-            0 => 0.,
-            _ => {
-                self.grades
-                    .iter()
-                    .map(|x| unsafe { std::mem::transmute::<Grade, u32>(*x) } as f64)
-                    .sum::<f64>()
-                    / self.grades.len() as f64
+    fn int_zip(&self) -> u32 {
+        let v = self.postnet.clone().into_bit_vec();
+        let mut ret = 0;
+        assert_eq!(v.len(), 26);
+        for i in 0..5 {
+            ret *= 10;
+            ret += Self::cal_int_zip(&v, i * 5) as u32;
+        }
+        ret
+    }
+
+    fn string_code(&self) -> String {
+        let v = self.postnet.clone().into_bit_vec();
+        let mut ret = String::new();
+        for bit in v {
+            ret.push(if bit { '1' } else { '0' });
+        }
+        ret
+    }
+
+    fn from_int_zip(v: &mut BitSet, mut code: u8, i: usize) {
+        if code == 0 {
+            code = 11;
+        }
+        for j in 0..5 {
+            if code > Self::WEIGHTS[j] {
+                code -= Self::WEIGHTS[j];
+                v.insert(i + j);
             }
         }
+    }
+
+    fn cal_int_zip<V: Index<usize, Output = bool>>(v: &V, i: usize) -> u8 {
+        let mut ret = 0;
+        for j in 0..5 {
+            if v[i + j] {
+                ret += Self::WEIGHTS[j];
+            }
+        }
+        if ret == 11 {
+            ret = 0
+        }
+        ret
     }
 }
 
 fn main() {
-    let mut rng = rand::thread_rng();
-
-    let mut movie1 = Movie::new("m1".to_string(), MPAA::G);
-    for _ in 0..5 {
-        movie1.add_rating(unsafe { std::mem::transmute(rng.gen_range(1..=5)) })
-    }
-    println!(
-        "{}, MPAA: {}, Average: {}",
-        movie1.name,
-        movie1.mpaa.as_ref(),
-        movie1.get_average()
-    );
-
-    let mut movie2 = Movie::new("m2".to_string(), MPAA::PG);
-    for _ in 0..5 {
-        movie2.add_rating(unsafe { std::mem::transmute(rng.gen_range(1..=5)) })
-    }
-    println!(
-        "{}, MPAA: {}, Average: {}",
-        movie2.name,
-        movie2.mpaa.as_ref(),
-        movie2.get_average()
+    assert_eq!(
+        ZipCode::new_from_string_code("10100101000101011000010011").int_zip(),
+        99504
     );
 }

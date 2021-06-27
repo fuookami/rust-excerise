@@ -1,16 +1,14 @@
 use rand::Rng;
 
 struct Counter {
-    num: u64
+    num: u64,
 }
 
 impl Counter {
-    const MAX_NUM : u64 = 9999;
+    const MAX_NUM: u64 = 9999;
 
     fn new() -> Self {
-        Self {
-            num: 0
-        }
+        Self { num: 0 }
     }
 
     fn reset(&mut self) {
@@ -39,7 +37,11 @@ impl Counter {
 
     fn print(&self) {
         match self.overflow() {
-            true => println!("{:02}.{:02}, overflow", self.num / 100 % 100, self.num % 100),
+            true => println!(
+                "{:02}.{:02}, overflow",
+                self.num / 100 % 100,
+                self.num % 100
+            ),
             false => println!("{:02}.{:02}", self.num / 100 % 100, self.num % 100),
         }
     }
@@ -56,7 +58,7 @@ fn main() {
             1 => counter.increase_10(),
             2 => counter.increase_100(),
             3 => counter.increase_1000(),
-            _ => panic!("Impossible")
+            _ => panic!("Impossible"),
         }
         counter.print();
     }
@@ -70,7 +72,7 @@ fn main() {
             1 => counter.increase_10(),
             2 => counter.increase_100(),
             3 => counter.increase_1000(),
-            _ => panic!("Impossible")
+            _ => panic!("Impossible"),
         }
         counter.print();
     }

@@ -1,5 +1,5 @@
 [package]
-name = "ex-10_10"
+name = "ex-10_11"
 version = "0.1.0"
 authors = ["fuookami <fuookami@163.com>"]
 edition = "2018"
@@ -7,4 +7,5 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bit-set = "*"
+rand = "*"
+strum_macros = "*"
