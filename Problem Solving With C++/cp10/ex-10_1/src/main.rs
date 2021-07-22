@@ -3,10 +3,10 @@ extern crate strum_macros;
 
 use rand::Rng;
 
-const QUIZ_AMOUNT : usize = 2;
-const EXAM_AMOUNT : usize = 2;
-const QUIZ_FULL_SCORE : u64 = 10;
-const EXAM_FULL_SCORE : u64 = 100;
+const QUIZ_AMOUNT: usize = 2;
+const EXAM_AMOUNT: usize = 2;
+const QUIZ_FULL_SCORE: u64 = 10;
+const EXAM_FULL_SCORE: u64 = 100;
 
 #[derive(AsRefStr)]
 enum FinalScore {
@@ -14,7 +14,7 @@ enum FinalScore {
     B,
     C,
     D,
-    F
+    F,
 }
 
 impl FinalScore {
@@ -24,7 +24,7 @@ impl FinalScore {
             _ if score >= 80 => FinalScore::B,
             _ if score >= 70 => FinalScore::C,
             _ if score >= 60 => FinalScore::D,
-            _ => FinalScore::F
+            _ => FinalScore::F,
         }
     }
 }
