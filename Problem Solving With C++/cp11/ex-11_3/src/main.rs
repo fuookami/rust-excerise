@@ -85,7 +85,7 @@ impl FromStr for Complex {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match scan_fmt!(s, "{} + {} i", f64, f64) {
             Result::Ok((real, imaginary)) => Result::Ok(Self::new_from_complex(real, imaginary)),
-            Result::Err(_) => Result::Err(())
+            Result::Err(_) => Result::Err(()),
         }
     }
 }
