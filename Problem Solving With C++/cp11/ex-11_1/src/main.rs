@@ -115,11 +115,19 @@ impl<T: Sized> Vector<T> {
         unsafe {
             if new_size != self._size {
                 let allocator = System {};
-                self.ptr = allocator.realloc(
-                    self.ptr as *mut u8,
-                    Layout::from_size_align(Self::ELEM_SIZE * self._capacity, Self::ALIGN).unwrap(),
-                    Self::ELEM_SIZE * new_size,
-                ) as *mut T;
+                if self.ptr.is_null() {
+                    self.ptr = allocator.alloc(
+                        Layout::from_size_align(Self::ELEM_SIZE * self._capacity, Self::ALIGN)
+                            .unwrap(),
+                    ) as *mut T;
+                } else {
+                    self.ptr = allocator.realloc(
+                        self.ptr as *mut u8,
+                        Layout::from_size_align(Self::ELEM_SIZE * self._capacity, Self::ALIGN)
+                            .unwrap(),
+                        Self::ELEM_SIZE * new_size,
+                    ) as *mut T;
+                }
                 if self._size < new_size {
                     for i in self._size..new_size {
                         self[i] = new_elem.clone();
@@ -135,11 +143,19 @@ impl<T: Sized> Vector<T> {
         unsafe {
             if new_capacity > self._capacity {
                 let allocator = System {};
-                self.ptr = allocator.realloc(
-                    self.ptr as *mut u8,
-                    Layout::from_size_align(Self::ELEM_SIZE * self._capacity, Self::ALIGN).unwrap(),
-                    Self::ELEM_SIZE * new_capacity,
-                ) as *mut T;
+                if self.ptr.is_null() {
+                    self.ptr = allocator.alloc(
+                        Layout::from_size_align(Self::ELEM_SIZE * self._capacity, Self::ALIGN)
+                            .unwrap(),
+                    ) as *mut T;
+                } else {
+                    self.ptr = allocator.realloc(
+                        self.ptr as *mut u8,
+                        Layout::from_size_align(Self::ELEM_SIZE * self._capacity, Self::ALIGN)
+                            .unwrap(),
+                        Self::ELEM_SIZE * new_capacity,
+                    ) as *mut T;
+                }
                 self._capacity = new_capacity;
             }
         }
