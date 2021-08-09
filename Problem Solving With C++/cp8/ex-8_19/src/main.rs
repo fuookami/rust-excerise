@@ -1,15 +1,19 @@
+struct Player {
+    name: String,
+    point: u64,
+}
+
 struct Record {
-    names: Vec<String>,
-    points: Vec<u64>,
+    players: Vec<Player>,
 }
 
 impl Record {
     fn is_empty(&self) -> bool {
-        self.names.is_empty()
+        self.players.is_empty()
     }
 
     fn len(&self) -> usize {
-        self.names.len()
+        self.players.len()
     }
 }
 
@@ -17,46 +21,69 @@ const MAX_LEN: usize = 10;
 
 fn add(record: &mut Record, name: &str, point: u64) {
     if record.is_empty() {
-        record.names.push(name.to_string());
-        record.points.push(point);
-    } else if record.len() == MAX_LEN && point > *record.points.last().unwrap() {
-        for i in 0..record.points.len() {
-            if record.points[i] < point {
-                record.names.remove(i);
-                record.points.remove(i);
-                record.names.insert(i, name.to_string());
-                record.points.insert(i, point);
+        record.players.push(Player {
+            name: name.to_string(),
+            point: point,
+        });
+    } else if record.len() == MAX_LEN && point > record.players.last().unwrap().point {
+        for i in 0..record.players.len() {
+            if record.players[i].point < point {
+                record.players.remove(i);
+                record.players.insert(
+                    i,
+                    Player {
+                        name: name.to_string(),
+                        point: point,
+                    },
+                );
                 break;
             }
         }
     } else {
         let mut flag = false;
-        for i in 0..record.points.len() {
-            if record.points[i] < point {
-                record.names.insert(i, name.to_string());
-                record.points.insert(i, point);
+        for i in 0..record.players.len() {
+            if record.players[i].point < point {
+                record.players.insert(
+                    i,
+                    Player {
+                        name: name.to_string(),
+                        point: point,
+                    },
+                );
                 flag = true;
                 break;
             }
         }
         if !flag {
-            record.names.push(name.to_string());
-            record.points.push(point);
+            record.players.push(Player {
+                name: name.to_string(),
+                point: point,
+            });
         }
     }
 }
 
 fn print(record: &Record) {
-    for i in 0..record.points.len() {
-        println!("{:2}: {} {}", i + 1, record.names[i], record.points[i]);
+    for i in 0..record.players.len() {
+        println!(
+            "{:2}: {} {}",
+            i + 1,
+            record.players[i].name,
+            record.players[i].point
+        );
     }
 }
 
 fn print_one(record: &Record, name: &str) {
     let mut flag = false;
-    for i in 0..record.names.len() {
-        if record.names[i] == name {
-            println!("{:2}: {} {}", i + 1, record.names[i], record.points[i]);
+    for i in 0..record.players.len() {
+        if record.players[i].name == name {
+            println!(
+                "{:2}: {} {}",
+                i + 1,
+                record.players[i].name,
+                record.players[i].point
+            );
             flag = true;
         }
     }
@@ -67,10 +94,9 @@ fn print_one(record: &Record, name: &str) {
 
 fn delete(record: &mut Record, name: &str) {
     let mut i = 0;
-    while i != record.points.len() {
-        if record.names[i] == name {
-            record.names.remove(i);
-            record.points.remove(i);
+    while i != record.players.len() {
+        if record.players[i].name == name {
+            record.players.remove(i);
         } else {
             i += 1;
         }
@@ -79,8 +105,7 @@ fn delete(record: &mut Record, name: &str) {
 
 fn main() {
     let mut record = Record {
-        names: Vec::new(),
-        points: Vec::new(),
+        players: Vec::new(),
     };
 
     add(&mut record, "Bill", 100);
