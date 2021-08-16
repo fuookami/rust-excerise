@@ -1,6 +1,6 @@
 use std::alloc::*;
-use std::mem;
 use std::fmt;
+use std::mem;
 
 struct LinkNode<T: Sized> {
     val: T,
@@ -74,7 +74,10 @@ impl<T: Sized> LinkList<T> {
         self.head = p;
     }
 
-    fn write(&self) where T: fmt::Display {
+    fn write(&self)
+    where
+        T: fmt::Display,
+    {
         if self.empty() {
             return;
         } else {

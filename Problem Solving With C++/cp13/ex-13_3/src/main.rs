@@ -1,8 +1,8 @@
 use std::alloc::*;
-use std::mem;
-use std::fmt;
-use std::ops;
 use std::convert;
+use std::fmt;
+use std::mem;
+use std::ops;
 
 struct Monomial {
     coefficient: f64,
@@ -60,7 +60,7 @@ impl Polynomial {
     }
 
     fn new_from_polynomial(mut poly: Vec<(f64, i64)>) -> Self {
-        poly.sort_by(|lhs, rhs| { lhs.1.cmp(&rhs.1) });
+        poly.sort_by(|lhs, rhs| lhs.1.cmp(&rhs.1));
         let mut ret = Self::new();
         for monomial in poly {
             ret.add(monomial);
@@ -87,7 +87,9 @@ impl Polynomial {
                     (*p).next = Monomial::new(monomial.0, monomial.1);
                 } else if (*q).index == monomial.1 {
                     (*q).coefficient += monomial.0;
-                } else /* if (*q).index < monomial.1 */ {
+                } else
+                /* if (*q).index < monomial.1 */
+                {
                     (*p).next = Monomial::new(monomial.0, monomial.1);
                     p = (*p).next;
                     (*p).next = q;
@@ -180,5 +182,4 @@ impl ops::Sub for &Polynomial {
     }
 }
 
-fn main() {
-}
+fn main() {}
