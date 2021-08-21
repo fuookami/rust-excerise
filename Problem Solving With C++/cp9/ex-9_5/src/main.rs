@@ -1,25 +1,25 @@
 struct Computer {
     index: usize,
-    user: Option<String>
+    user: Option<String>,
 }
 
 struct Lab {
     index: usize,
-    computers: Vec<Computer>
+    computers: Vec<Computer>,
 }
 
 impl Lab {
     fn new(index: usize, computer_amount: usize) -> Lab {
         let mut computers = Vec::new();
         for i in 0..computer_amount {
-            computers.push(Computer{
+            computers.push(Computer {
                 index: i + 1,
-                user: None
+                user: None,
             })
         }
         Lab {
             index: index,
-            computers: computers
+            computers: computers,
         }
     }
 
@@ -28,7 +28,7 @@ impl Lab {
         for computer in &self.computers {
             match &computer.user {
                 Some(user) => print!("{}: {} ", computer.index, user),
-                None => print!("{}: empty ", computer.index)
+                None => print!("{}: empty ", computer.index),
             }
         }
         println!("");
@@ -63,7 +63,7 @@ fn logout(id: String, labs: &mut [Lab]) -> bool {
                         computer.user = None;
                         return true;
                     }
-                },
+                }
                 None => {}
             }
         }
@@ -79,7 +79,7 @@ fn find(id: String, labs: &[Lab]) -> Option<(usize, usize)> {
                     if user == &id {
                         return Some((lab.index, computer.index));
                     }
-                },
+                }
                 None => {}
             }
         }
@@ -94,7 +94,12 @@ fn print(labs: &[Lab]) {
 }
 
 fn main() {
-    let mut labs = [Lab::new(1, 5), Lab::new(2, 6), Lab::new(3, 4), Lab::new(4, 3)];
+    let mut labs = [
+        Lab::new(1, 5),
+        Lab::new(2, 6),
+        Lab::new(3, 4),
+        Lab::new(4, 3),
+    ];
 
     login("99577".to_string(), 4, 1, &mut labs);
     login("12345".to_string(), 1, 2, &mut labs);
@@ -103,7 +108,7 @@ fn main() {
 
     match find("12345".to_string(), &labs) {
         Some((lab_index, computer_index)) => println!("{}, {}", lab_index, computer_index),
-        None => println!("None")
+        None => println!("None"),
     }
     println!("");
 
@@ -113,11 +118,11 @@ fn main() {
 
     match find("99577".to_string(), &labs) {
         Some((lab_index, computer_index)) => println!("{}, {}", lab_index, computer_index),
-        None => println!("None")
+        None => println!("None"),
     }
 
     match find("12345".to_string(), &labs) {
         Some((lab_index, computer_index)) => println!("{}, {}", lab_index, computer_index),
-        None => println!("None")
+        None => println!("None"),
     }
 }
