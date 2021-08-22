@@ -1,6 +1,6 @@
 use std::alloc::*;
-use std::mem;
 use std::fmt;
+use std::mem;
 
 struct LinkNode<T: Sized> {
     val: T,
@@ -55,7 +55,10 @@ impl<T: Sized> LinkList<T> {
         }
     }
 
-    fn write(&self) where T: fmt::Display {
+    fn write(&self)
+    where
+        T: fmt::Display,
+    {
         if self.empty() {
             return;
         } else {
@@ -76,15 +79,13 @@ fn merge<T: Sized + PartialOrd>(l1: LinkList<T>, l2: LinkList<T>) -> LinkList<T>
     let mut curr = list.head;
     let mut p = l1.head;
     let mut q = l2.head;
-    let mut add = |ptr| {
-        unsafe {
-            if curr == std::ptr::null_mut() {
-                list.head = ptr;
-                curr = ptr;
-            } else {
-                (*curr).next = ptr;
-                curr = ptr;
-            }
+    let mut add = |ptr| unsafe {
+        if curr == std::ptr::null_mut() {
+            list.head = ptr;
+            curr = ptr;
+        } else {
+            (*curr).next = ptr;
+            curr = ptr;
         }
     };
     while p != std::ptr::null_mut() || q != std::ptr::null_mut() {
