@@ -31,9 +31,7 @@ impl Vehicle for SportCar {
     }
 }
 
-impl Car for SportCar {
-
-}
+impl Car for SportCar {}
 
 fn main() {
     println!("Hello, world!");
