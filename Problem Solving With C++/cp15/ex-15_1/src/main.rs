@@ -7,6 +7,7 @@ enum DoctorSpecialty {
     GeneralPractitioner,
 }
 
+#[derive(Clone)]
 struct Doctor {
     specialty: DoctorSpecialty,
     office_visit_fee: f64,
@@ -19,15 +20,6 @@ impl Doctor {
         Doctor {
             specialty: specialty,
             office_visit_fee: office_visit_fee,
-        }
-    }
-}
-
-impl Clone for Doctor {
-    fn clone(&self) -> Self {
-        Doctor {
-            specialty: self.specialty,
-            office_visit_fee: self.office_visit_fee,
         }
     }
 }
