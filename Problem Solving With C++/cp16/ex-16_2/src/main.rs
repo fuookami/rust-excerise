@@ -1,6 +1,8 @@
 use scan_fmt::scan_fmt;
 use std::error::Error;
 use std::fmt;
+use std::str::FromStr;
+use std::string::String;
 
 struct MonthError {
     month: u64,
@@ -50,7 +52,7 @@ impl fmt::Debug for MonthDayParseError {
         match &self {
             MonthDayParseError::MonthError(e) => e.fmt(f),
             MonthDayParseError::DayError(e) => e.fmt(f),
-            MonthDayParseError::FormatError(s) => write!(f, "{}", s),
+            MonthDayParseError::FormatError(s) => write!(f, "No such month_day format as {}", s),
         }
     }
 }
@@ -60,7 +62,7 @@ impl fmt::Display for MonthDayParseError {
         match self {
             MonthDayParseError::MonthError(e) => e.fmt(f),
             MonthDayParseError::DayError(e) => e.fmt(f),
-            MonthDayParseError::FormatError(s) => write!(f, "{}", s),
+            MonthDayParseError::FormatError(s) => write!(f, "No such month_day format as {}", s),
         }
     }
 }
@@ -97,10 +99,9 @@ fn parse_month_day(month_day: &str) -> Result<String, MonthDayParseError> {
                 Result::Ok(format!("{} {}", month_to_name[(month - 1) as usize], day))
             }
         }
-        Result::Err(_) => Result::Err(MonthDayParseError::FormatError(format!(
-            "No such mont_day format {}",
-            month_day
-        ))),
+        Result::Err(_) => Result::Err(MonthDayParseError::FormatError(
+            String::from_str(month_day).unwrap(),
+        )),
     }
 }
 
