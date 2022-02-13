@@ -1,6 +1,5 @@
 use std::error::Error;
 use std::fmt;
-use std::ops::Index;
 
 struct ArrayOutOfRangeError {
     index: usize,
