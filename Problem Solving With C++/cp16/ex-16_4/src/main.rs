@@ -29,7 +29,7 @@ impl<T> CheckedArray<T> {
         if index < self.array.len() {
             Result::Ok(&self.array[index])
         } else {
-            Result::Err(ArrayOutOfRangeError { index })
+            Result::Err(ArrayOutOfRangeError { index: index })
         }
     }
 }
