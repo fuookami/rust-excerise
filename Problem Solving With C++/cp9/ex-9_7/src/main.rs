@@ -1,6 +1,6 @@
 struct MatrixSize {
     rows: usize,
-    cols: usize
+    cols: usize,
 }
 
 struct Matrix {
@@ -26,8 +26,8 @@ impl Matrix {
             vals: vals,
             size: MatrixSize {
                 rows: rows,
-                cols: cols
-            }
+                cols: cols,
+            },
         }
     }
 
@@ -41,7 +41,7 @@ impl Matrix {
     fn get(&self, row: usize, col: usize) -> Option<i32> {
         match self.size.index(row, col) {
             Some(i) => Some(self.vals[i]),
-            None => None
+            None => None,
         }
     }
 }
