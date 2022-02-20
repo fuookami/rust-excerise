@@ -1,13 +1,13 @@
 use std::alloc::*;
 use std::mem;
 
-struct GenericList<T: Sized> {
+struct GenericStack<T: Sized> {
     array: *mut T,
     size: usize,
     capacity: usize,
 }
 
-impl<T: Sized> GenericList<T> {
+impl<T: Sized> GenericStack<T> {
     const ALIGN: usize = mem::align_of::<T>();
     const ELEM_SIZE: usize = mem::size_of::<T>();
 
@@ -47,49 +47,34 @@ impl<T: Sized> GenericList<T> {
         self.capacity
     }
 
-    fn add(&mut self, new_ele: T) {
-        if self.len() < self.capacity() {
-            unsafe {
-                *self.array.add(self.size) = new_ele;
+    fn empty(&self) -> bool {
+        self.len() == 0
+    }
+
+    fn push(&mut self, new_ele: T) {
+        if self.len() == self.capacity() {
+            self.capacity = self.capacity * 3 / 2 + 1;
+            Self::realloc(self.array, self.capacity);
+        }
+
+        unsafe {
+            *self.array.add(self.size) = new_ele;
+        }
+        self.size += 1;
+    }
+
+    fn pop(&mut self) -> Option<T> where T: Clone {
+        match self.empty() {
+            true => Option::None,
+            false => {
+                self.size -= 1;
+                unsafe { Option::Some((*self.array.add(self.size - 1)).clone()) }
             }
-            self.size += 1;
         }
     }
 
-    fn full(&self) -> bool {
-        self.len() == self.capacity()
-    }
-
-    fn erase(&mut self) {
-        self.size = 0;
-    }
-
-    fn begin(&self) -> Iterator<'_, T> {
-        Iterator { list: self, pos: 0 }
-    }
-
-    fn end(&self) -> Iterator<'_, T> {
-        Iterator {
-            list: self,
-            pos: self.len(),
-        }
-    }
-}
-
-impl<T: Sized> PartialEq for &GenericList<T> {
-    fn eq(&self, other: &Self) -> bool {
-        self == other
-    }
-}
-
-struct Iterator<'a, T: Sized> {
-    list: &'a GenericList<T>,
-    pos: usize,
-}
-
-impl<'a, T: Sized> PartialEq for Iterator<'a, T> {
-    fn eq(&self, other: &Self) -> bool {
-        self.list == other.list && self.pos == other.pos
+    fn top(&self) -> &T {
+        unsafe { &*self.array.add(self.size - 1) }
     }
 }
 
