@@ -63,7 +63,10 @@ impl<T: Sized> GenericStack<T> {
         self.size += 1;
     }
 
-    fn pop(&mut self) -> Option<T> where T: Clone {
+    fn pop(&mut self) -> Option<T>
+    where
+        T: Clone,
+    {
         match self.empty() {
             true => Option::None,
             false => {
