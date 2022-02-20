@@ -1,9 +1,13 @@
+use std::usize;
+
 struct GenericList<T: Sized> {
     array: Vec<Option<T>>,
     size: usize,
 }
 
 impl<T: Sized> GenericList<T> {
+    const NPOS: usize = usize::MAX;
+
     fn init(size: usize) -> Self {
         let mut ret = Self {
             array: Vec::new(),
@@ -37,6 +41,18 @@ impl<T: Sized> GenericList<T> {
     fn erase(&mut self) {
         self.array.clear();
         self.size = 0;
+    }
+
+    fn find(&self, ele: &T) -> usize
+    where
+        T: PartialEq,
+    {
+        for i in 0..self.len() {
+            if (&self.array[i]).as_ref().unwrap() == ele {
+                return i;
+            }
+        }
+        Self::NPOS
     }
 
     fn begin(&self) -> Iterator<'_, T> {
